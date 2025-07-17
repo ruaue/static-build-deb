@@ -25,6 +25,7 @@ jobs:
         run: |
           apk update
           apk add --no-cache \
+            curl \
             bash \
             git \
             ruby \
