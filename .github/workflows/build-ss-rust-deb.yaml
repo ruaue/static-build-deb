@@ -58,6 +58,9 @@ jobs:
       - name: Debug staging directory
         run: |
           echo "STAGING_DIR contents:"
+          rm "$(pwd)/shadowsocks-rust-server/sslocal"
+          rm "$(pwd)/shadowsocks-rust-server/ssmanager"
+          rm "$(pwd)/shadowsocks-rust-server/ssurl"
           ls -la "$(pwd)/shadowsocks-rust-server" || echo "shadowsocks-rust-server is empty or missing"
           ls -la "$(pwd)/shadowsocks-rust-server/usr/bin" || echo "usr/bin is empty or missing"
           ls -la "$(pwd)/shadowsocks-rust-server/script" || echo "script dir is empty or missing"
