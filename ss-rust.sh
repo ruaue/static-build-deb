@@ -23,8 +23,8 @@ git checkout "$VERSION"
 
 # Build with musl target
 RUSTFLAGS="-C target-feature=-crt-static -C link-self-contained=yes" \
-cargo build --target x86_64-unknown-linux-musl --bin ssserver --release --no-default-features --features="server aead-cipher aead-cipher-extra aead-cipher-2022 aead-cipher-2022-extra mimalloc multi-threaded"
-cargo build --target x86_64-unknown-linux-musl --bin ssservice --release --no-default-features --features service
+cargo build --frozen  --target x86_64-unknown-linux-musl --bin ssserver --release --no-default-features --features="server aead-cipher aead-cipher-extra aead-cipher-2022 aead-cipher-2022-extra mimalloc multi-threaded"
+cargo build --frozen  --target x86_64-unknown-linux-musl --bin ssservice --release --no-default-features --features service
 
 # Copy binaries to repo's shadowsocks-rust-server/usr/bin/
 cp target/x86_64-unknown-linux-musl/release/ssserver "$STAGING_DIR/usr/bin/"
