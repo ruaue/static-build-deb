@@ -26,6 +26,7 @@ jobs:
           apk update
           apk add --no-cache \
             curl \
+            binutils \
             bash \
             git \
             ruby \
@@ -61,6 +62,8 @@ jobs:
           ls -la "$(pwd)/shadowsocks-rust-server/usr/bin" || echo "usr/bin is empty or missing"
           ls -la "$(pwd)/shadowsocks-rust-server/script" || echo "script dir is empty or missing"
           ls -la "$(pwd)/shadowsocks-rust-server/etc/shadowsocks-rust" || echo "etc/shadowsocks-rust is empty or missing"
+          strip "$(pwd)/shadowsocks-rust-server/usr/bin/ssserver"
+          strip "$(pwd)/shadowsocks-rust-server/usr/bin/ssservice"
 
       - name: Package shadowsocks-rust with FPM
         run: |
