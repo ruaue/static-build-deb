@@ -22,7 +22,7 @@ git tag -l
 git checkout "$VERSION"
 
 # Build with musl target
-RUSTFLAGS="-C target-feature=-crt-static -C link-self-contained=yes" -C prefer-dynamic=no" \
+RUSTFLAGS="-C target-feature=-crt-static -C link-self-contained=yes -C prefer-dynamic=no" \
 cargo build  --target x86_64-unknown-linux-musl --bin ssserver --release --no-default-features --features="server aead-cipher aead-cipher-extra aead-cipher-2022 aead-cipher-2022-extra mimalloc multi-threaded"
 cargo build  --target x86_64-unknown-linux-musl --bin ssservice --release --no-default-features --features service
 
