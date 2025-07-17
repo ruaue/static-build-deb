@@ -38,13 +38,20 @@ jobs:
           gem install fpm
           rustup target add x86_64-unknown-linux-musl
 
-      - name: Make ss-rust.sh executable
+      - name: Download shadowsocks-rust binary
         run: |
-          chmod +x ss-rust.sh
+          VERSION="${GITHUB_REF_NAME#v}"  # Strip 'v' prefix
+          RELEASE_FILENAME="shadowsocks-v${VERSION}.x86_64-unknown-linux-musl.tar.xz"
+          curl -L -o "${RELEASE_FILENAME}" "https://github.com/shadowsocks/shadowsocks-rust/releases/download/${GITHUB_REF_NAME}/${RELEASE_FILENAME}"
+          mkdir -p shadowsocks-rust-server/usr/bin
+          mkdir -p shadowsocks-rust-server/etc/shadowsocks-rust
+          tar -xJf "${RELEASE_FILENAME}" -C shadowsocks-rust-server/usr/bin
+          # Optionally, include example config files from the repository
+          curl -L -o shadowsocks-rust-server/etc/shadowsocks-rust/config.json.example \
+            "https://github.com/shadowsocks/shadowsocks-rust/raw/${GITHUB_REF_NAME}/examples/config.json"
+          curl -L -o shadowsocks-rust-server/etc/shadowsocks-rust/config_ext.json.example \
+            "https://github.com/shadowsocks/shadowsocks-rust/raw/${GITHUB_REF_NAME}/examples/config_ext.json"
 
-      - name: Execute shadowsocks-rust build script
-        run: |
-          bash ss-rust.sh
 
       - name: Debug staging directory
         run: |
