@@ -129,31 +129,4 @@ jobs:
           prerelease: ${{ contains(github.ref_name, '-') }}
           tag_name: ${{ inputs.tag || github.ref_name }}
 
-  build-release-windows:
-    runs-on: windows-latest
-    env:
-      RUSTFLAGS: "-C target-feature=+crt-static"
-      RUST_BACKTRACE: full
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ilammy/setup-nasm@v1
-
-      - name: Install Rust
-        run: |
-          rustup set profile minimal
-          rustup toolchain install stable
-          rustup default stable
-          rustup override set stable
-
-      - name: Build release
-        run: |
-          pwsh ./build/build-host-release.ps1 "full winservice"
-
-      - name: Upload Github Assets
-        uses: softprops/action-gh-release@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          files: build/release/*
-          prerelease: ${{ contains(github.ref_name, '-') }}
-          tag_name: ${{ inputs.tag || github.ref_name }}
+ 
