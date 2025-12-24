@@ -12,7 +12,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: rust:alpine3.22
+      image: rust:alpine3.23
       env:
         TZ: Asia/Shanghai
         GITHUB_REF_NAME: ${{ github.ref_name }}
