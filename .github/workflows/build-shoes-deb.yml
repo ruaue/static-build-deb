@@ -48,7 +48,7 @@ jobs:
         env:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
-          RELEASE_FILENAME="shoes-v${VERSION}-x86_64-unknown-linux-gnu.tar.gz"
+          RELEASE_FILENAME="shoes-x86_64-unknown-linux-gnu.tar.gz"
           DOWNLOAD_URL="https://github.com/cfal/shoes/releases/download/v${VERSION}/${RELEASE_FILENAME}"
           
           echo "Downloading from: ${DOWNLOAD_URL}"
