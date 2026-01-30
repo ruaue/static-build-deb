@@ -109,58 +109,58 @@ jobs:
           # Create a basic default config template if examples don't exist
           if [ ! -f "${STAGING_DIR}/etc/shoes/config.yaml.example" ]; then
             cat > "${STAGING_DIR}/etc/shoes/config.yaml.example" <<'EOF'
-# Shoes proxy server configuration example
-# See: https://github.com/cfal/shoes for full documentation
+               # Shoes proxy server configuration example
+               # See: https://github.com/cfal/shoes for full documentation
 
-# Example SOCKS5 server
-- address: 127.0.0.1:1080
-  protocol:
-    type: socks
-  rules:
-    - masks: "0.0.0.0/0"
-      action: allow
-      client_proxy: direct
+               # Example SOCKS5 server
+               - address: 127.0.0.1:1080
+                 protocol:
+                 type: socks
+                 rules:
+              - masks: "0.0.0.0/0"
+                action: allow
+                client_proxy: direct
 
-# Example VMess server (TLS)
-# - address: 0.0.0.0:443
-#   protocol:
-#     type: vmess
-#     cipher: chacha20-poly1305
-#     user_id: YOUR-UUID-HERE
-#     udp_enabled: true
-EOF
-          fi
+              # Example VMess server (TLS)
+              # - address: 0.0.0.0:443
+              #   protocol:
+              #     type: vmess
+              #     cipher: chacha20-poly1305
+              #     user_id: YOUR-UUID-HERE
+              #     udp_enabled: true
+              EOF
+             fi
 
       - name: Create systemd service file
         run: |
           STAGING_DIR="shoes-package"
           
           cat > "${STAGING_DIR}/usr/lib/systemd/system/shoes.service" <<'EOF'
-[Unit]
-Description=Shoes Multi-Protocol Proxy Server
-Documentation=https://github.com/cfal/shoes
-After=network-online.target
-Wants=network-online.target
+             [Unit]
+              Description=Shoes Multi-Protocol Proxy Server
+              Documentation=https://github.com/cfal/shoes
+              After=network-online.target
+              Wants=network-online.target
 
-[Service]
-Type=simple
-ExecStart=/usr/bin/shoes /etc/shoes/config.yaml
-Restart=on-failure
-RestartSec=5s
-User=shoes
-Group=shoes
-CapabilityBoundingSet=CAP_NET_BIND_SERVICE
-AmbientCapabilities=CAP_NET_BIND_SERVICE
-NoNewPrivileges=true
-ProtectSystem=strict
-ProtectHome=true
-ReadWritePaths=/var/log/shoes
-PrivateTmp=true
-LimitNOFILE=65536
+             [Service]
+              Type=simple
+              ExecStart=/usr/bin/shoes /etc/shoes/config.yaml
+              Restart=on-failure
+              RestartSec=5s
+              User=shoes
+              Group=shoes
+              CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+              AmbientCapabilities=CAP_NET_BIND_SERVICE
+              NoNewPrivileges=true
+              ProtectSystem=strict
+              ProtectHome=true
+              ReadWritePaths=/var/log/shoes
+              PrivateTmp=true
+              LimitNOFILE=65536
 
-[Install]
-WantedBy=multi-user.target
-EOF
+             [Install]
+              WantedBy=multi-user.target
+              EOF
 
       - name: Create documentation files
         env:
@@ -170,69 +170,69 @@ EOF
           
           # Create README
           cat > "${STAGING_DIR}/usr/share/doc/shoes/README" <<EOF
-Shoes - Multi-Protocol Proxy Server
-====================================
+             Shoes - Multi-Protocol Proxy Server
+             ====================================
 
-Version: ${VERSION}
+             Version: ${VERSION}
 
-Shoes is a high-performance multi-protocol proxy server written in Rust.
+             Shoes is a high-performance multi-protocol proxy server written in Rust.
 
-Supported Protocols:
-  - HTTP/HTTPS
-  - SOCKS5
-  - VMess AEAD
-  - VLESS
-  - Shadowsocks
-  - Trojan
-  - Snell v3
-  - Hysteria2
-  - TUIC v5
+             Supported Protocols:
+             - HTTP/HTTPS
+             - SOCKS5
+             - VMess AEAD
+             - VLESS
+             - Shadowsocks
+             - Trojan
+             - Snell v3
+             - Hysteria2
+             - TUIC v5
 
-Configuration:
-  - Main config: /etc/shoes/config.yaml
-  - Examples: /etc/shoes/*.example
+           Configuration:
+             - Main config: /etc/shoes/config.yaml
+             - Examples: /etc/shoes/*.example
 
-Systemd Service:
-  - Enable: sudo systemctl enable shoes
-  - Start: sudo systemctl start shoes
-  - Status: sudo systemctl status shoes
-  - Logs: sudo journalctl -u shoes -f
+           Systemd Service:
+            - Enable: sudo systemctl enable shoes
+            - Start: sudo systemctl start shoes
+            - Status: sudo systemctl status shoes
+            - Logs: sudo journalctl -u shoes -f
 
-Documentation:
-  https://github.com/cfal/shoes
-  https://github.com/cfal/shoes/blob/master/CONFIG.md
+           Documentation:
+            https://github.com/cfal/shoes
+            https://github.com/cfal/shoes/blob/master/CONFIG.md
 
-EOF
+           EOF
           
           # Create copyright file
           cat > "${STAGING_DIR}/usr/share/doc/shoes/copyright" <<'EOF'
-Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: shoes
-Source: https://github.com/cfal/shoes
+              Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+              Upstream-Name: shoes
+              Source: https://github.com/cfal/shoes
 
-Files: *
-Copyright: 2024 cfal and contributors
-License: MIT
+             Files: *
+             Copyright: 2024 cfal and contributors
+             License: MIT
 
-License: MIT
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
- .
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
- .
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
-EOF
+             License: MIT
+             Permission is hereby granted, free of charge, to any person obtaining a copy
+             of this software and associated documentation files (the "Software"), to deal
+             in the Software without restriction, including without limitation the rights
+             to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+             copies of the Software, and to permit persons to whom the Software is
+             furnished to do so, subject to the following conditions:
+             .
+             The above copyright notice and this permission notice shall be included in all
+             copies or substantial portions of the Software.
+              .
+             THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+             IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+             FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+             AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+             LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+             OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+             SOFTWARE.
+            EOF
 
           # Copy CHANGELOG if exists
           if [ -f "CHANGELOG.md" ]; then
@@ -243,57 +243,57 @@ EOF
         run: |
           # Post-install script
           cat > postinst.sh <<'EOF'
-#!/bin/bash
-set -e
+           #!/bin/bash
+           set -e
 
-# Create shoes user and group if they don't exist
-if ! getent group shoes > /dev/null; then
-    groupadd --system shoes
-fi
+          # Create shoes user and group if they don't exist
+            if ! getent group shoes > /dev/null; then
+            groupadd --system shoes
+            fi
 
-if ! getent passwd shoes > /dev/null; then
-    useradd --system --gid shoes --shell /usr/sbin/nologin \
+            if ! getent passwd shoes > /dev/null; then
+             useradd --system --gid shoes --shell /usr/sbin/nologin \
             --home-dir /var/lib/shoes --no-create-home \
             --comment "Shoes proxy server" shoes
-fi
+            fi
 
-# Create log directory
-mkdir -p /var/log/shoes
-chown shoes:shoes /var/log/shoes
+           # Create log directory
+            mkdir -p /var/log/shoes
+            chown shoes:shoes /var/log/shoes
 
-# Set proper permissions on config directory
-chown -R root:shoes /etc/shoes
-chmod 750 /etc/shoes
-chmod 640 /etc/shoes/*.example 2>/dev/null || true
+           # Set proper permissions on config directory
+           chown -R root:shoes /etc/shoes
+           chmod 750 /etc/shoes
+           chmod 640 /etc/shoes/*.example 2>/dev/null || true
 
-# Reload systemd
-if [ -d /run/systemd/system ]; then
-    systemctl daemon-reload || true
-fi
+           # Reload systemd
+           if [ -d /run/systemd/system ]; then
+            systemctl daemon-reload || true
+           fi
 
-echo ""
-echo "Shoes proxy server installed successfully!"
-echo ""
-echo "Next steps:"
-echo "  1. Create config: sudo cp /etc/shoes/config.yaml.example /etc/shoes/config.yaml"
-echo "  2. Edit config: sudo nano /etc/shoes/config.yaml"
-echo "  3. Enable service: sudo systemctl enable shoes"
-echo "  4. Start service: sudo systemctl start shoes"
-echo "  5. Check status: sudo systemctl status shoes"
-echo ""
-EOF
+           echo ""
+           echo "Shoes proxy server installed successfully!"
+           echo ""
+           echo "Next steps:"
+           echo "  1. Create config: sudo cp /etc/shoes/config.yaml.example /etc/shoes/config.yaml"
+           echo "  2. Edit config: sudo nano /etc/shoes/config.yaml"
+           echo "  3. Enable service: sudo systemctl enable shoes"
+           echo "  4. Start service: sudo systemctl start shoes"
+           echo "  5. Check status: sudo systemctl status shoes"
+           echo ""
+           EOF
 
           # Pre-remove script
           cat > prerm.sh <<'EOF'
-#!/bin/bash
-set -e
+             #!/bin/bash
+             set -e
 
-# Stop and disable service before removal
-if [ -d /run/systemd/system ]; then
-    systemctl stop shoes 2>/dev/null || true
-    systemctl disable shoes 2>/dev/null || true
-fi
-EOF
+            # Stop and disable service before removal
+              if [ -d /run/systemd/system ]; then
+              systemctl stop shoes 2>/dev/null || true
+              systemctl disable shoes 2>/dev/null || true
+              fi
+              EOF
 
           chmod +x postinst.sh prerm.sh
 
@@ -317,8 +317,8 @@ EOF
             --vendor "cfal and contributors" \
             --maintainer "GitHub Actions <noreply@github.com>" \
             --description "A high-performance multi-protocol proxy server written in Rust
- Supports HTTP, SOCKS5, VMess, VLESS, Shadowsocks, Trojan, Snell,
- Hysteria2, and TUIC v5 protocols." \
+               Supports HTTP, SOCKS5, VMess, VLESS, Shadowsocks, Trojan, Snell,
+               Hysteria2, and TUIC v5 protocols." \
             --url "https://github.com/cfal/shoes" \
             --category "net" \
             --provides "proxy-server" \
