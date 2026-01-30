@@ -3,7 +3,7 @@ name: Build and Release shoes deb package
 on:
   push:
     branches:
-      - main
+      - shoes
     tags:
       - 'v*.*.*'
   workflow_dispatch:
