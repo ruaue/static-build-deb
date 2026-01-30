@@ -331,8 +331,8 @@ jobs:
             --vendor "cfal and contributors" \
             --maintainer "GitHub Actions <noreply@github.com>" \
             --description "A high-performance multi-protocol proxy server written in Rust
-               Supports HTTP, SOCKS5, VMess, VLESS, Shadowsocks, Trojan, Snell,
-               Hysteria2, and TUIC v5 protocols." \
+          Supports HTTP, SOCKS5, VMess, VLESS, Shadowsocks, Trojan, Snell,
+          Hysteria2, and TUIC v5 protocols." \
             --url "https://github.com/cfal/shoes" \
             --category "net" \
             --provides "proxy-server" \
@@ -345,7 +345,9 @@ jobs:
             --after-install postinst.sh \
             --before-remove prerm.sh \
             -C "${STAGING_DIR}" \
-            -f
+            usr/bin \
+            etc/shoes \
+            usr/share/doc/shoes
 
       - name: Verify package
         env:
