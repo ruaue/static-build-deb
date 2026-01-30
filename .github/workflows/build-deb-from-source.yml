@@ -1,4 +1,4 @@
-name: Build and Release shoes deb package
+name: Build and Release shoes deb package from source
 
 on:
   push:
