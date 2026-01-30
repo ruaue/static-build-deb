@@ -44,30 +44,27 @@ jobs:
           # Install FPM for creating deb packages
           sudo gem install --no-document fpm
 
-      - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          toolchain: stable
-          targets: x86_64-unknown-linux-gnu
-
-      - name: Setup Rust cache
-        uses: Swatinem/rust-cache@v2
-        with:
-          cache-on-failure: true
-
-      - name: Build shoes binary (release mode)
+      - name: Download shoes binary from GitHub releases
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
-          cargo build --release --bin shoes
+          RELEASE_FILENAME="shoes-v${VERSION}-x86_64-unknown-linux-gnu.tar.gz"
+          DOWNLOAD_URL="https://github.com/cfal/shoes/releases/download/v${VERSION}/${RELEASE_FILENAME}"
           
-          # Verify binary was created
-          if [ ! -f target/release/shoes ]; then
-            echo "Error: Binary not found"
+          echo "Downloading from: ${DOWNLOAD_URL}"
+          curl -L -f -o "${RELEASE_FILENAME}" "${DOWNLOAD_URL}" || {
+            echo "Error: Failed to download release binary"
+            exit 1
+          }
+          
+          # Verify download succeeded and file is not empty
+          if [ ! -s "${RELEASE_FILENAME}" ]; then
+            echo "Error: Downloaded file is empty or missing"
             exit 1
           fi
           
-          echo "Binary info:"
-          file target/release/shoes
-          ls -lh target/release/shoes
+          echo "Downloaded: $(ls -lh ${RELEASE_FILENAME})"
+        shell: bash
 
       - name: Prepare package directory structure
         env:
