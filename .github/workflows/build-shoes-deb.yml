@@ -257,57 +257,57 @@ jobs:
         run: |
           # Post-install script
           cat > postinst.sh <<'EOF'
-           #!/bin/bash
-           set -e
+          #!/bin/bash
+          set -e
 
           # Create shoes user and group if they don't exist
-            if ! getent group shoes > /dev/null; then
+          if ! getent group shoes > /dev/null; then
             groupadd --system shoes
-            fi
+          fi
 
-            if ! getent passwd shoes > /dev/null; then
-             useradd --system --gid shoes --shell /usr/sbin/nologin \
-            --home-dir /var/lib/shoes --no-create-home \
-            --comment "Shoes proxy server" shoes
-            fi
+          if ! getent passwd shoes > /dev/null; then
+            useradd --system --gid shoes --shell /usr/sbin/nologin \
+              --home-dir /var/lib/shoes --no-create-home \
+              --comment "Shoes proxy server" shoes
+          fi
 
-           # Create log directory
-            mkdir -p /var/log/shoes
-            chown shoes:shoes /var/log/shoes
+          # Create log directory
+          mkdir -p /var/log/shoes
+          chown shoes:shoes /var/log/shoes
 
-           # Set proper permissions on config directory
-           chown -R root:shoes /etc/shoes
-           chmod 750 /etc/shoes
-           chmod 640 /etc/shoes/*.example 2>/dev/null || true
+          # Set proper permissions on config directory
+          chown -R root:shoes /etc/shoes
+          chmod 750 /etc/shoes
+          chmod 640 /etc/shoes/*.example 2>/dev/null || true
 
-           # Reload systemd
-           if [ -d /run/systemd/system ]; then
+          # Reload systemd
+          if [ -d /run/systemd/system ]; then
             systemctl daemon-reload || true
-           fi
+          fi
 
-           echo ""
-           echo "Shoes proxy server installed successfully!"
-           echo ""
-           echo "Next steps:"
-           echo "  1. Create config: sudo cp /etc/shoes/config.yaml.example /etc/shoes/config.yaml"
-           echo "  2. Edit config: sudo nano /etc/shoes/config.yaml"
-           echo "  3. Enable service: sudo systemctl enable shoes"
-           echo "  4. Start service: sudo systemctl start shoes"
-           echo "  5. Check status: sudo systemctl status shoes"
-           echo ""
-           EOF
+          echo ""
+          echo "Shoes proxy server installed successfully!"
+          echo ""
+          echo "Next steps:"
+          echo "  1. Create config: sudo cp /etc/shoes/config.yaml.example /etc/shoes/config.yaml"
+          echo "  2. Edit config: sudo nano /etc/shoes/config.yaml"
+          echo "  3. Enable service: sudo systemctl enable shoes"
+          echo "  4. Start service: sudo systemctl start shoes"
+          echo "  5. Check status: sudo systemctl status shoes"
+          echo ""
+          EOF
 
           # Pre-remove script
           cat > prerm.sh <<'EOF'
-             #!/bin/bash
-             set -e
+          #!/bin/bash
+          set -e
 
-            # Stop and disable service before removal
-              if [ -d /run/systemd/system ]; then
-              systemctl stop shoes 2>/dev/null || true
-              systemctl disable shoes 2>/dev/null || true
-              fi
-              EOF
+          # Stop and disable service before removal
+          if [ -d /run/systemd/system ]; then
+            systemctl stop shoes 2>/dev/null || true
+            systemctl disable shoes 2>/dev/null || true
+          fi
+          EOF
 
           chmod +x postinst.sh prerm.sh
 
