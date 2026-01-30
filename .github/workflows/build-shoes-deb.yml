@@ -71,25 +71,43 @@ jobs:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
           STAGING_DIR="shoes-package"
+          RELEASE_FILENAME="shoes-v${VERSION}-x86_64-unknown-linux-gnu.tar.gz"
           
-          # Create standard Debian package directory structure
+          # Create directory structure
           mkdir -p "${STAGING_DIR}/usr/bin"
           mkdir -p "${STAGING_DIR}/etc/shoes"
           mkdir -p "${STAGING_DIR}/usr/lib/systemd/system"
           mkdir -p "${STAGING_DIR}/usr/share/doc/shoes"
-          mkdir -p "${STAGING_DIR}/usr/share/man/man1"
           
-          # Copy binary
-          cp target/release/shoes "${STAGING_DIR}/usr/bin/"
+          # Extract binary to temporary location first
+          echo "Extracting binary from ${RELEASE_FILENAME}..."
+          tar -xzf "${RELEASE_FILENAME}"
+          
+          # Find the extracted binary (it might be just 'shoes' or in a subdirectory)
+          BINARY_PATH=$(find . -maxdepth 2 -name "shoes" -type f -executable | head -1)
+          
+          if [ -z "$BINARY_PATH" ]; then
+            echo "Error: Could not find shoes binary in archive"
+            echo "Contents of archive:"
+            tar -tzf "${RELEASE_FILENAME}"
+            exit 1
+          fi
+          
+          echo "Found binary at: ${BINARY_PATH}"
+          
+          # Copy binary to package directory
+          cp "${BINARY_PATH}" "${STAGING_DIR}/usr/bin/shoes"
           
           # Strip binary to reduce size
-          strip "${STAGING_DIR}/usr/bin/shoes"
+          strip "${STAGING_DIR}/usr/bin/shoes" || true
           
-          # Make executable
+          # Make binary executable
           chmod +x "${STAGING_DIR}/usr/bin/shoes"
           
           echo "Binary prepared:"
           ls -lh "${STAGING_DIR}/usr/bin/shoes"
+          file "${STAGING_DIR}/usr/bin/shoes"
+        shell: bash
 
       - name: Copy example configurations
         run: |
