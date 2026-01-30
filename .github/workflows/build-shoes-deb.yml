@@ -466,7 +466,7 @@ jobs:
           
           echo ""
           echo "=== Verify config directory ==="
-          ls -la /etc/shoes/
+          sudo ls -la /etc/shoes/
           
           echo ""
           echo "=== Check user and group ==="
@@ -475,8 +475,8 @@ jobs:
           
           echo ""
           echo "=== Verify permissions ==="
-          ls -ld /etc/shoes
-          ls -l /etc/shoes/
+          sudo ls -ld /etc/shoes
+          sudo ls -l /etc/shoes/
 
       - name: Test dry-run
         run: |
