@@ -124,28 +124,27 @@ jobs:
           # Create a basic default config template if examples don't exist
           if [ ! -f "${STAGING_DIR}/etc/shoes/config.yaml.example" ]; then
             cat > "${STAGING_DIR}/etc/shoes/config.yaml.example" <<'EOF'
-               # Shoes proxy server configuration example
-               # See: https://github.com/cfal/shoes for full documentation
+          # Shoes proxy server configuration example
+          # See: https://github.com/cfal/shoes for full documentation
 
-               # Example SOCKS5 server
-               - address: 127.0.0.1:1080
-                 protocol:
-                 type: socks
-                 rules:
+          # Example SOCKS5 server
+          - address: 127.0.0.1:1080
+            protocol:
+              type: socks
+            rules:
               - masks: "0.0.0.0/0"
                 action: allow
                 client_proxy: direct
 
-              # Example VMess server (TLS)
-              # - address: 0.0.0.0:443
-              #   protocol:
-              #     type: vmess
-              #     cipher: chacha20-poly1305
-              #     user_id: YOUR-UUID-HERE
-              #     udp_enabled: true
-              EOF
-             fi
-
+          # Example VMess server (TLS)
+          # - address: 0.0.0.0:443
+          #   protocol:
+          #     type: vmess
+          #     cipher: chacha20-poly1305
+          #     user_id: YOUR-UUID-HERE
+          #     udp_enabled: true
+          EOF
+          fi
       - name: Create systemd service file
         run: |
           STAGING_DIR="shoes-package"
