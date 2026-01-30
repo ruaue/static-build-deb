@@ -174,7 +174,7 @@ jobs:
 
              [Install]
               WantedBy=multi-user.target
-              EOF
+            EOF
 
       - name: Create documentation files
         env:
